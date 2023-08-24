@@ -1,5 +1,5 @@
 import "./App.css";
-import GetInfoForm from "./pages/GetInfoForm";
+import GetInfoForm from "./components/GetInfoForm";
 
 function App() {
   return (

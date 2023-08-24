@@ -1,5 +1,6 @@
 import { Lock } from "@mui/icons-material";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import { useForm } from "react-hook-form";
 
@@ -10,6 +11,7 @@ interface User {
 }
 
 const GetInfoForm = () => {
+  const navigate = useNavigate();
   const form = useForm<User>({
     defaultValues: {
       name: "",
@@ -18,10 +20,14 @@ const GetInfoForm = () => {
     },
   });
 
-  const { register, handleSubmit } = form;
+  const { register, handleSubmit, formState } = form;
+  const { errors } = formState;
 
   const onSubmit = (data: User) => {
-    console.log(data);
+    navigate("/second");
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    users.push(data);
+    localStorage.setItem("users", JSON.stringify(users));
   };
 
   return (
@@ -46,15 +52,22 @@ const GetInfoForm = () => {
             <TextField
               label="Name"
               {...register("name", { required: "Name is required" })}
+              error={!!errors.name}
+              helperText={errors.name?.message}
             />
             <TextField
               label="Phone Number"
+              type="number"
               {...register("phoneNumber", { required: "Number is required" })}
+              error={!!errors.phoneNumber}
+              helperText={errors.phoneNumber?.message}
             />
             <TextField
               type="email"
               label="Email"
               {...register("email", { required: "Email is required" })}
+              error={!!errors.email}
+              helperText={errors.email?.message}
             />
             <Button type="submit" variant="contained">
               Next
